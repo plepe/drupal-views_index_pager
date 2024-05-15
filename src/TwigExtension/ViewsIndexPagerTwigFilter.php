@@ -15,6 +15,11 @@ class ViewsIndexPagerTwigFilter extends AbstractExtension {
   public static function show($param=array()) {
     $view = \Drupal\views\Views::getView($param['view']);
     $view->setDisplay($param['display']);
+
+    if ($view->usePager()) {
+      $view->setItemsPerPage(0); // override pager to get all results
+    }
+
     $view->execute();
     $list = [];
 
