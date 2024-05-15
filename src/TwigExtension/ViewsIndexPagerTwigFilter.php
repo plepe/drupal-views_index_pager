@@ -15,13 +15,20 @@ class ViewsIndexPagerTwigFilter extends AbstractExtension {
   public static function show($param=array()) {
     $view = \Drupal\views\Views::getView($param['view']);
     $view->setDisplay($param['display']);
+    $pageSize = 0;
 
-    if ($view->usePager()) {
-      $view->setItemsPerPage(0); // override pager to get all results
-    }
+    $list = [];
+
+    // Override the pager settings to display all results
+    $view->setItemsPerPage(0); // Set the number of items per page to 0 to display all results
 
     $view->execute();
-    $list = [];
+
+    // Get the pager settings from the view
+    if ($view->usePager()) {
+      $pagerOptions = $view->display_handler->getOption('pager');
+      $pageSize = $pagerOptions['options']['items_per_page'] ?? 0;
+    }
 
     $field = $view->field[$param['index_field']];
     
@@ -35,7 +42,7 @@ class ViewsIndexPagerTwigFilter extends AbstractExtension {
 
     $result = [];
     foreach ($list as $index => $i) {
-      $page = floor($i / $param['page_size']);
+      $page = $pageSize ? floor($i / $pageSize) : 0;
       $onThisPage = ($_REQUEST['page'] ?? 0) == $page;
 
       $link = '#' . htmlspecialchars($index);
