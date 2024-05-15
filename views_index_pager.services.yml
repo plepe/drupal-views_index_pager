@@ -1,0 +1,6 @@
+services:
+  views_index_pager.twig_extension:
+    arguments: ['@renderer']
+    class: Drupal\views_index_pager\TwigExtension\ViewsIndexPagerTwigFilter
+    tags:
+      - { name: twig.extension }

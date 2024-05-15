@@ -1,0 +1,6 @@
+name: 'Views Index Pager'
+type: module
+description: 'Add an index to a view'
+dependencies:
+  - drupal:views
+core_version_requirement: ^8.8 || ^9 || ^10
